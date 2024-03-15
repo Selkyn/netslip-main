@@ -13,7 +13,7 @@ console.log(token);
 
     try {
         const response = await axios.post(
-            `http://localhost:4000/api/favorite/add-favorite/${omdbId}`,
+            `http://localhost:8000/api/favorite/add/${omdbId}`,
             { ...formData, userId }, // Inclus userId dans ma requete
             {
                 headers: {
@@ -21,7 +21,7 @@ console.log(token);
                 }
             }
         );
-             console.log(req.session.token)
+            //  console.log(req.session.token)
              res.redirect(req.get('referer'));
         // res.status(201).json(response.data);
     } catch (error) {
@@ -33,15 +33,15 @@ console.log(token);
 //recuperer les favoris
 exports.getFavorite = async (req, res) => {
     try {
-        const userId = req.session.userId; //recupere l'id de mon user connecté
-        const omdbId = req.body.omdbId;
-        const response = await axios.get(`http://localhost:4000/api/favorite/get-favorites/${userId}`, {
+        // const userId = req.session.userId; //recupere l'id de mon user connecté
+        // const omdbId = req.body.omdbId;
+        const response = await axios.get(`http://localhost:8000/api/favorite/get`, {
             headers: {
                 Authorization: `Bearer ${req.session.token}`
             }
         });
         const favorites = response.data; //les informations de la reponse de la requete est stocké dans la variable favorites
-
+        console.log(favorites);
         const moviesDetails = []; //mon tableau où seront stocké les films et donc avoir les details
 
         const getMovieDetails = async (omdbId) => { //à partir de l'id du film (qui est stocké dans ma table favoris), on va pouvoir aller chercher les details en se connectant à l'api OMDB
@@ -54,12 +54,12 @@ exports.getFavorite = async (req, res) => {
             }
         };
 
-        //boule sur mon tableau favorites
+        //boucle sur mon tableau favorites
         for (const favorite of favorites) {
-            const movieDetails = await getMovieDetails(favorite.omdbId, favorite._id);
+            const movieDetails = await getMovieDetails(favorite.omdbId);
             if (movieDetails) {
                 moviesDetails.push({
-                    favoriteId: favorite._id,
+                    favoriteId: favorite.id,
                     movieDetails: movieDetails,
                 });
             }
@@ -80,7 +80,7 @@ exports.deleteFavorite = async (req, res) => {
     // const favoriteId = Favorite._id;
     const favoriteId = req.params.favoriteId;
     try {
-        const response = await axios.delete(`http://localhost:4000/api/favorite/delete-favorite/${favoriteId}`, {
+        const response = await axios.delete(`http://localhost:8000/api/favorite/${favoriteId}/delete`, {
             headers: {
                 Authorization: `Bearer ${req.session.token}`
             }

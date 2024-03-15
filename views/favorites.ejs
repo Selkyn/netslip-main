@@ -16,9 +16,11 @@
                 <p>Réalisateur: <%= movie.movieDetails.Director %>
                 </p>
                 <!-- <p>id = <%= movie.favoriteId %></p> -->
-                <form  action="/favorite/delete-favorite/<%= movie.favoriteId %>" method="post">
+                <form action="/favorite/<%= movie.favoriteId %>/delete" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
                     <button class="btn btn-primary" type="submit">Supprimer favoris</button>
                 </form>
+                
             </div>
                 <% }); %>
             

@@ -24,14 +24,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
-                    <% if (userToken && userEmail) { %>
+                    <% if (userToken) { %>
                         <li class="nav-item">
                             <a class="nav-link" href="/favorite/get-favorites">Mes Favoris</a>
                         </li>
                         <% } %>
 
                             <li class="nav-item">
-                                <% if (userToken && userEmail) { %>
+                                <% if (userToken) { %>
                                     <form action="/user/logout" method="get">
                                         <button class="btn btn-primary" type="submit">Déconnexion</button>
                                     </form>
@@ -41,7 +41,7 @@
                             </li>
 
                             <li class="nav-item mx-4">
-                                <% if (userToken && userEmail) { %>
+                                <% if (userToken) { %>
                                     <p>Bienvenue, <%= userEmail %> !</p>
                                     <% } %>
                             </li>

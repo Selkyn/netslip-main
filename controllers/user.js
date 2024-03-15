@@ -1,5 +1,6 @@
 // const bcrypt = require('bcrypt');
-// const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
+const cookieParser = require('cookie-parser');
 const axios = require('axios');
 
 
@@ -12,7 +13,7 @@ exports.register = async (req, res, next) => {
             password: req.body.password,
         };
 
-        const response = await axios.post('http://localhost:4000/api/auth/signup', userData);
+        const response = await axios.post('http://localhost:8000/api/register', userData);
 
         if (response.status === 201) {
             console.log('Utilisateur enregistré avec succes:', response.data.message);
@@ -36,7 +37,7 @@ exports.login = async (req, res) => {
 
     try {
         // Effectue une requête à l'API-USER pour l'authentification
-        const response = await axios.post('http://localhost:4000/api/auth/login', {
+        const response = await axios.post('http://localhost:8000/api/login_check', {
             email: email,
             password: password
         });
@@ -44,15 +45,19 @@ exports.login = async (req, res) => {
         // Récupère le token JWT depuis la réponse
         // const jwtToken = response.data.token;
         // const userEmail = response.data.email;
-        const { token, email: userEmail, userId : userId } = response.data;
+        const { token, email: userEmail} = response.data;
 
         // Stocker le token et l'email dans la session
         req.session.token = token;
         req.session.email = userEmail;
-        req.session.userId = userId;
+        // req.session.userId = userId;
+
+        
 
         // res.json({ token, email: userEmail, userId: userId });
         res.redirect('/');
+        console.log(token);
+        console.log(userEmail);
         // res.json({ token: jwtToken });
         // res.send(`Bienvenue, ${userEmail} !`);
     } catch (error) {

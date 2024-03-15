@@ -51,6 +51,8 @@ app.get('/favorites', (req, res) => {
 
 
 
+
+
 //middleware qui configure les headers CORS pour permettre les requêtes depuis n'importe quelle origine ('*') et définir les méthodes et headers autorisés.
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -61,7 +63,7 @@ app.use((req, res, next) => {
 
 //ROUTES
 app.use('/user', usersRoutes);
-app.use('/results', movieRoutes)
+app.use('/results', movieRoutes);
 app.use('/favorite', favoriteRoutes);
 
 
